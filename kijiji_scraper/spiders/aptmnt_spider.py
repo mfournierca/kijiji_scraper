@@ -5,6 +5,7 @@ from .. import items
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors import LinkExtractor
 
+
 class KijijiAptmntSpider(CrawlSpider):
     name = "kijiji_aptmnt_spider"
     allowed_domains = ["kijiji.ca"]
@@ -17,7 +18,7 @@ class KijijiAptmntSpider(CrawlSpider):
             callback='parse_item'),
         Rule(
             LinkExtractor(
-                allow=["http://www.kijiji.ca/b-apartments-condos/ottawa/page-[0-5]/.+"]
+                allow=["http://www.kijiji.ca/b-apartments-condos/ottawa/.*?/page-[0-5]/.+"]
             )
         )
     ]
@@ -36,11 +37,18 @@ class KijijiAptmntSpider(CrawlSpider):
 
         return aptmnt
     
+    def _clean_string(self, string):
+        for i in [",", "\n", "\r", ";", "\\"]:
+            string = string.replace(i, "")
+        return string.strip()
+
     def _extract_title(self, response):
-        return response.xpath("//h1/text()").extract()[0]
-    
+        l = " ".join(response.xpath("//h1/text()").extract())
+        return self._clean_string(l)
+        
     def _extract_description(self, response):
-        return response.xpath("//span[@itemprop='description']/text()").extract()[0]
+        l = " ".join(response.xpath("//span[@itemprop='description']/text()").extract())
+        return self._clean_string(l)
 
     def _extract_field(self, response, fieldname):
         l = response.xpath("//th[contains(text(), '{0}')]/following::td[1]//./text()".
@@ -50,4 +58,9 @@ class KijijiAptmntSpider(CrawlSpider):
     def _extract_bedrooms(self, response):
         r = re.search(r'kijiji.ca\/v-(\d)-bedroom-apartments-condos', response.url)
         return r.group(1).strip() if r else None
+
     
+class GlebeKijijiAptmntSpider(KijijiAptmntSpider):
+    start_urls = ["http://www.kijiji.ca/b-apartments-condos/ottawa/glebe/k0c37l1700185"]
+    name = "glebe_kijiji_aptmnt_spider"
+
