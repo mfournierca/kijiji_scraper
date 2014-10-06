@@ -8,7 +8,8 @@
 import scrapy
 
 
-class KijijiScraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class AptmntItem(scrapy.Item):
+    url = scrapy.Field()
+    address = scrapy.Field()
+    price = scrapy.Field()
+    date_listed = scrapy.Field()  
