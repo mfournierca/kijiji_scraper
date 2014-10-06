@@ -12,4 +12,6 @@ class AptmntItem(scrapy.Item):
     url = scrapy.Field()
     address = scrapy.Field()
     price = scrapy.Field()
-    date_listed = scrapy.Field()  
+    date_listed = scrapy.Field() 
+    num_bedrooms = scrapy.Field()
+    num_bathrooms = scrapy.Field() 
