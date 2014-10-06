@@ -1,5 +1,6 @@
-__init__.pyc aptmnt_spider.pyc
+__init__.pyc 
+aptmnt_spider.pyc
 output/
 .DS_Store
-.DS_Storeq
 *.pyc
+*/*.pyc
