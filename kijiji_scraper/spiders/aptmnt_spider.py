@@ -31,8 +31,16 @@ class KijijiAptmntSpider(CrawlSpider):
         aptmnt["date_listed"] = self._extract_field(response, "Date Listed")
         aptmnt["num_bathrooms"] = self._extract_field(response, "Bathrooms (#)")
         aptmnt["num_bedrooms"] = self._extract_bedrooms(response)
+        aptmnt["title"] = self._extract_title(response)
+        aptmnt["description"] = self._extract_description(response)
 
         return aptmnt
+    
+    def _extract_title(self, response):
+        return response.xpath("//h1/text()").extract()[0]
+    
+    def _extract_description(self, response):
+        return response.xpath("//span[@itemprop='description']/text()").extract()[0]
 
     def _extract_field(self, response, fieldname):
         l = response.xpath("//th[contains(text(), '{0}')]/following::td[1]//./text()".

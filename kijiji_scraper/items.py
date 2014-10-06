@@ -15,3 +15,6 @@ class AptmntItem(scrapy.Item):
     date_listed = scrapy.Field() 
     num_bedrooms = scrapy.Field()
     num_bathrooms = scrapy.Field() 
+    description = scrapy.Field()
+    title = scrapy.Field()
+
